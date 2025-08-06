@@ -98,14 +98,15 @@
     <div id="statusMessage"></div>
   </div>
 
-  <script>
+ <script>
   const form = document.getElementById("crewForm");
   const statusMessage = document.getElementById("statusMessage");
   const submitBtn = document.getElementById("submitBtn");
 
   const categories = ["beforeImages", "duringImages", "afterImages", "footage", "asbuilt"];
+  const minTwoRequired = ["beforeImages", "duringImages", "afterImages"];
 
-  // 🖼️ Mostrar vista previa de imágenes
+  // 🖼️ Vista previa de imágenes
   categories.forEach(category => {
     const input = document.getElementById(category);
     input.addEventListener("change", () => {
@@ -141,8 +142,8 @@
     statusMessage.className = "";
     submitBtn.disabled = true;
 
-    // ✅ Validar mínimo 2 imágenes por categoría
-    for (const category of categories) {
+    // ✅ Validar mínimo 2 imágenes solo en categorías específicas
+    for (const category of minTwoRequired) {
       const files = document.getElementById(category).files;
       if (files.length < 2) {
         statusMessage.textContent = `⚠️ Debes subir al menos 2 imágenes en "${category.toUpperCase()}".`;
