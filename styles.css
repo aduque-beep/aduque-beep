@@ -1,0 +1,119 @@
+/* styles.css */
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom right, #eef2f7, #dbe6f1);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.container {
+  width: 100%;
+  max-width: 480px;
+  padding: 20px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 26px;
+  color: #003366;
+  margin: 0;
+  font-weight: 700;
+}
+
+form {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  border-top: 6px solid #FF9900;
+}
+
+.section-title {
+  font-size: 18px;
+  color: #003366;
+  margin: 20px 0 10px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333333;
+  font-size: 15px;
+}
+
+input[type="text"],
+input[type="date"],
+select,
+input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+input:focus,
+select:focus {
+  border-color: #FF9900;
+  outline: none;
+}
+
+.button-container {
+  text-align: center;
+  margin-top: 25px;
+}
+
+button {
+  background-color: #FF9900;
+  color: #ffffff;
+  border: none;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;
+  max-width: 300px;
+}
+
+button:hover {
+  background-color: #e68a00;
+  transform: scale(1.03);
+}
+
+/* Responsive tweaks */
+@media screen and (max-width: 400px) {
+  h2 {
+    font-size: 22px;
+  }
+
+  button {
+    font-size: 15px;
+    padding: 12px 20px;
+  }
+}
