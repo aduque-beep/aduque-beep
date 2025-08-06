@@ -103,11 +103,55 @@
   const statusMessage = document.getElementById("statusMessage");
   const submitBtn = document.getElementById("submitBtn");
 
+  const categories = ["beforeImages", "duringImages", "afterImages", "footage", "asbuilt"];
+
+  // 🖼️ Mostrar vista previa de imágenes
+  categories.forEach(category => {
+    const input = document.getElementById(category);
+    input.addEventListener("change", () => {
+      const previewId = `${category}-preview`;
+      let preview = document.getElementById(previewId);
+      if (!preview) {
+        preview = document.createElement("div");
+        preview.id = previewId;
+        preview.style.display = "flex";
+        preview.style.flexWrap = "wrap";
+        preview.style.gap = "10px";
+        input.parentNode.appendChild(preview);
+      }
+      preview.innerHTML = "";
+      Array.from(input.files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const img = document.createElement("img");
+          img.src = reader.result;
+          img.style.width = "100px";
+          img.style.height = "auto";
+          img.style.border = "1px solid #ccc";
+          preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+  });
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     statusMessage.style.display = "none";
     statusMessage.className = "";
     submitBtn.disabled = true;
+
+    // ✅ Validar mínimo 2 imágenes por categoría
+    for (const category of categories) {
+      const files = document.getElementById(category).files;
+      if (files.length < 2) {
+        statusMessage.textContent = `⚠️ Debes subir al menos 2 imágenes en "${category.toUpperCase()}".`;
+        statusMessage.classList.add("error");
+        statusMessage.style.display = "block";
+        submitBtn.disabled = false;
+        return;
+      }
+    }
 
     const formData = new FormData(form);
     const payload = {
@@ -117,8 +161,6 @@
       crew: formData.get("crew"),
       images: {}
     };
-
-    const categories = ["beforeImages", "duringImages", "afterImages", "footage", "asbuilt"];
 
     for (const category of categories) {
       const files = formData.getAll(category + "[]");
@@ -137,10 +179,11 @@
     try {
       const response = await fetch("https://script.google.com/macros/s/AKfycbyg_s1grJP_LNyODFPaxn1Gdd36Lo69Wfak1lBaEBUrKiURUNU2Pr7DSpG79OlwX0VWqg/exec", {
         method: "POST",
-        body: JSON.stringify(payload),
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(payload),
+        redirect: "follow"
       });
 
       const result = await response.text();
@@ -149,6 +192,10 @@
         statusMessage.textContent = "✅ Formulario enviado correctamente.";
         statusMessage.classList.add("success");
         form.reset();
+        categories.forEach(cat => {
+          const preview = document.getElementById(`${cat}-preview`);
+          if (preview) preview.innerHTML = "";
+        });
       } else {
         statusMessage.textContent = "⚠️ Error al enviar el formulario: " + result;
         statusMessage.classList.add("error");
